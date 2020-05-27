@@ -64,8 +64,13 @@ class ManageProductItem extends StatelessWidget {
                 ),
                 IconButton(
                   icon: Icon(Icons.delete, color: Theme.of(context).errorColor),
-                  onPressed: () {
-                    product.removeSingleItem(products.id);
+                  onPressed: () async {
+                    try {
+                      await product.removeSingleItem(products.id);
+                    } catch (error) {
+                      Scaffold.of(context).showSnackBar(
+                          SnackBar(content: Text('Couldnt delete!')));
+                    }
                   },
                 ),
               ],

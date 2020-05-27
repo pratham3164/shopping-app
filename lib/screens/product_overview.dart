@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shopping_app/providers/cart.dart';
+import 'package:shopping_app/providers/products.dart';
 import 'package:shopping_app/screens/cart_screen.dart';
 import 'package:shopping_app/widgets/badge.dart';
 import 'package:shopping_app/widgets/custom_drawer.dart';
@@ -10,12 +11,25 @@ import '../widgets/product_grid_builder.dart';
 enum FilterOptions { favs, all }
 
 class ProductOverview extends StatefulWidget {
+  static const routeName = '/productOverview';
   @override
   _ProductOverviewState createState() => _ProductOverviewState();
 }
 
 class _ProductOverviewState extends State<ProductOverview> {
   bool showOption = false;
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    Provider.of<Products>(context, listen: false)
+        .fetchData()
+        .then((value) => setState(() {
+              isLoading = false;
+              print(isLoading);
+            }));
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,9 +68,11 @@ class _ProductOverviewState extends State<ProductOverview> {
                   ])
         ],
       ),
-      body: ProductGridBuilder(
-        showOption: showOption,
-      ),
+      body: isLoading
+          ? Center(child: CircularProgressIndicator())
+          : ProductGridBuilder(
+              showOption: showOption,
+            ),
     );
   }
 }

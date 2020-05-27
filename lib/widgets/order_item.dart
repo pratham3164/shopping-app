@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import 'package:shopping_app/providers/orders.dart' as oi;
 
@@ -23,6 +24,7 @@ class _OrderItemState extends State<OrderItem> {
         children: [
           ListTile(
               title: Text('\$${widget.order.amount}'),
+              subtitle: Text(DateFormat.yMMMMd().format(widget.order.date)),
               trailing: IconButton(
                   icon:
                       Icon(isexpanded ? Icons.expand_less : Icons.expand_more),

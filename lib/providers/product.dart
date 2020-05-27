@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class Product with ChangeNotifier {
   final String id;
@@ -8,14 +11,29 @@ class Product with ChangeNotifier {
   bool isfav;
 
   Product(
-      {@required this.id,
+      {this.id,
       @required this.title,
       @required this.price,
       @required this.imageUrl,
       this.isfav = false});
 
-  void toggleIsFavStatus() {
+  Future<void> toggleIsFavStatus(String token, String userId) async {
+    final url =
+        'https://fir-82faf.firebaseio.com/userFavourites/$userId/$id.json?auth=$token';
+    final bool oldValue = isfav;
+    print('inside toggle');
+    print(url);
     isfav = !isfav;
     notifyListeners();
+    try {
+      await http.put(url,
+          body: json.encode(
+            isfav,
+          ));
+    } catch (error) {
+      isfav = oldValue;
+      print('failed');
+      notifyListeners();
+    }
   }
 }

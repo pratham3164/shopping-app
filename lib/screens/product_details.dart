@@ -20,9 +20,12 @@ class ProductDetails extends StatelessWidget {
                   (MediaQuery.of(context).size.height -
                       AppBar().preferredSize.height -
                       MediaQuery.of(context).padding.top),
-              child: Image.network(
-                product.imageUrl,
-                fit: BoxFit.cover,
+              child: Hero(
+                tag: product.imageUrl,
+                child: Image.network(
+                  product.imageUrl,
+                  fit: BoxFit.cover,
+                ),
               )),
           SizedBox(height: 10),
           Text(
